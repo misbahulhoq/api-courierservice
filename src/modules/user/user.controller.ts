@@ -9,7 +9,7 @@ const createUser = async (req: Request, res: Response) => {
     success: true,
     message: "New user created successfully.",
     statusCode: HttpStatus.CREATED,
-    data: "",
+    data,
   });
 };
 
