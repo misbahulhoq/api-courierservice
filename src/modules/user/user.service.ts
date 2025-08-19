@@ -7,7 +7,7 @@ import { createUserValidationSchema } from "./user.validation";
 const createUser = async (payload: IUser) => {
   const userExists = await User.findOne({ email: payload.email });
   if (userExists)
-    throw new AppError("User already exists", HttpStatus.BAD_REQUEST);
+    throw new AppError("User already exists", HttpStatus.CONFLICT);
   const parsedData = createUserValidationSchema.parse(payload);
   await User.create(parsedData);
   return { message: "User created successfully" };
