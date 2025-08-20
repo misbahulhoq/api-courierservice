@@ -13,4 +13,18 @@ const createUser = async (payload: IUser) => {
   return { message: "User created successfully" };
 };
 
-export const UserServices = { createUser };
+const login = async (payload: IUser) => {
+  const userExists = await User.findOne({ email: payload.email }).select(
+    "+password"
+  );
+  if (!userExists) throw new AppError("User not found", HttpStatus.NOT_FOUND);
+  const isValidPassword = await userExists.matchPassword(payload.password);
+  if (!isValidPassword)
+    throw new AppError("Invalid credentials.", HttpStatus.UNAUTHORIZED);
+
+  const token = userExists.generateAuthToekn();
+
+  return { message: "User logged in successfully", token };
+};
+
+export const UserServices = { createUser, login };

@@ -16,6 +16,7 @@
   "devDependencies": {
     "@jest/globals": "^30.0.5",
     "@types/body-parser": "^1.19.6",
+    "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
@@ -33,6 +34,7 @@
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "courier-management-api": "link:",
     "dotenv": "^17.2.1",

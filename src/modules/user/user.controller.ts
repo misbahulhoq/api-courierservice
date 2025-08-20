@@ -13,4 +13,15 @@ const createUser = async (req: Request, res: Response) => {
   });
 };
 
-export const UserController = { createUser };
+const login = async (req: Request, res: Response) => {
+  const data = await UserServices.login(req.body);
+  res.cookie("authorization", data.token);
+  sendResponse(res, {
+    success: true,
+    message: data.message,
+    statusCode: HttpStatus.OK,
+    data,
+  });
+};
+
+export const UserController = { createUser, login };

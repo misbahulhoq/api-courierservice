@@ -37,4 +37,28 @@ describe("User API - /api/v1/user ", () => {
       .expect(409);
     expect(response).toBeDefined();
   });
+
+  it("should log in a user if valid login data is passed.", async () => {
+    const response = await request(app)
+      .post("/api/v1/auth/login")
+      .send({
+        email: "test@gmail.com",
+        password: "thebigman",
+      })
+      .expect(200);
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+    expect(response.body).not.toHaveProperty("password");
+    expect(response.body.data).toHaveProperty("token");
+  });
+
+  it("should return 401 invalid login data is passed.", async () => {
+    const response = await request(app).post("/api/v1/auth/login").send({
+      email: "test@gmail.com",
+      password: "invalidpass",
+    });
+    expect(response).toBeDefined();
+    expect(response.status).toBe(401);
+    expect(response.body).not.toHaveProperty("password");
+  });
 });
