@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "../utils/AppError";
 import { HttpStatus } from "../utils/httpStatusCodes";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import envVars from "../config/env.config";
 const verifyLogin = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -19,10 +19,22 @@ const verifyLogin = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const verifyAuth = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+const verifyAuth =
+  (...roles: ("admin" | "customer" | "delivery_agent")[]) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.cookies.authorization;
+      if (!token) throw new AppError("Forbidden.", HttpStatus.FORBIDDEN);
+      const decoded = jwt.verify(token, envVars.JWT_SECRET) as JwtPayload;
+      if (!roles.includes(decoded.role)) {
+        throw new AppError("Forbidden.", HttpStatus.FORBIDDEN);
+      }
+
+      console.log(decoded);
+      next();
+    } catch (error) {
+      throw new AppError("Forbidden.", HttpStatus.FORBIDDEN);
+    }
+  };
 
 export const AuthMiddlewares = { verifyLogin, verifyAuth };
