@@ -17,6 +17,9 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
+      courier-management-api:
+        specifier: 'link:'
+        version: 'link:'
       dotenv:
         specifier: ^17.2.1
         version: 17.2.1
