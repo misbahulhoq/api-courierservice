@@ -26,6 +26,18 @@ describe("User API - /api/v1/user ", () => {
     // expect(response.status).toBe(201);
   });
 
+  it("should return 400 if tried to create a new user with invalid data on POST /", async () => {
+    const response = await request(app)
+      .post("/api/v1/auth/signup")
+      .send({
+        name: "Test User",
+        email: "test2@gmail.com",
+      })
+      .expect(400);
+
+    expect(response).toBeDefined();
+  });
+
   it("should return 409 if tried to insert one user with same email", async () => {
     const response = await request(app)
       .post("/api/v1/auth/signup")

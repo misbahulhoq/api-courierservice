@@ -13,6 +13,16 @@ const createUser = async (req: Request, res: Response) => {
   });
 };
 
+const createDeliveryAgent = async (req: Request, res: Response) => {
+  const data = await UserServices.createDeliveryAgent(req.body);
+  sendResponse(res, {
+    success: true,
+    message: data.message,
+    statusCode: HttpStatus.CREATED,
+    data,
+  });
+};
+
 const login = async (req: Request, res: Response) => {
   const data = await UserServices.login(req.body);
   res.cookie("authorization", data.token);
@@ -24,4 +34,4 @@ const login = async (req: Request, res: Response) => {
   });
 };
 
-export const UserController = { createUser, login };
+export const UserController = { createUser, createDeliveryAgent, login };

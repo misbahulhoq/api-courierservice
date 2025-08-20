@@ -13,6 +13,16 @@ const createUser = async (payload: IUser) => {
   return { message: "User created successfully" };
 };
 
+const createDeliveryAgent = async (payload: Partial<IUser>) => {
+  const userExists = await User.findOne({ email: payload.email });
+  if (userExists)
+    throw new AppError("User already exists", HttpStatus.CONFLICT);
+  const parsedData = createUserValidationSchema.parse(payload);
+  parsedData.role = "delivery_agent";
+  await User.create(parsedData);
+  return { message: "Delivery agent created successfully" };
+};
+
 const login = async (payload: IUser) => {
   const userExists = await User.findOne({ email: payload.email }).select(
     "+password"
@@ -27,4 +37,4 @@ const login = async (payload: IUser) => {
   return { message: "User logged in successfully", token };
 };
 
-export const UserServices = { createUser, login };
+export const UserServices = { createUser, createDeliveryAgent, login };
